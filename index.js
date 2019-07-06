@@ -7,4 +7,4 @@ const authRoute = require("./routes/auth");
 //Route middleware
 app.use("/api/wc/", authRoute);
 
-app.listen(80, () => console.log("Server up and running"));
+app.listen(8080, () => console.log("Server up and running"));
