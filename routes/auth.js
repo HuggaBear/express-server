@@ -1,9 +1,8 @@
 const router = require("express").Router();
 const axios = require("axios");
 const dotenv = require("dotenv");
-const cors = require("cors");
 
-router.get("/products", cors(), async (req, response) => {
+router.get("/products", async (req, response) => {
 	dotenv.config();
 	try {
 		const instance = axios.create({
