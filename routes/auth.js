@@ -3,7 +3,7 @@ const axios = require("axios");
 const dotenv = require("dotenv");
 const cors = require("cors");
 
-router.post("/products", cors(), async (req, response) => {
+router.get("/products", cors(), async (req, response) => {
 	dotenv.config();
 	try {
 		const instance = axios.create({
@@ -13,12 +13,11 @@ router.post("/products", cors(), async (req, response) => {
 			}
 		});
 		const result = await instance.get(`https://react.alphabean.co.nz/wp-json/wc/v2/products/6271/variations`);
+
 		response.send(result.data[0].price);
 	} catch (err) {
 		response.send("Error: " + err);
 	}
 });
-
-//router.post('/login')
 
 module.exports = router;
