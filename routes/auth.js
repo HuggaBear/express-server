@@ -2,7 +2,7 @@ const router = require("express").Router();
 const axios = require("axios");
 const dotenv = require("dotenv");
 
-router.get("/products", async (req, response) => {
+router.get("/products", async function(req, response) {
 	dotenv.config();
 	try {
 		const instance = axios.create({
