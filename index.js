@@ -9,4 +9,6 @@ app.use("/api/wc/", authRoute);
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
+app.get("/a/b/c", (req, res) => res.send("Hello World! (/a/b/c)"));
+
 app.listen(8081, () => console.log("Server up and running on port 8081"));
