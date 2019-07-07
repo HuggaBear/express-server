@@ -9,4 +9,4 @@ app.use("/api/wc/", authRoute);
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
-app.listen(8080, () => console.log("Server up and running!!!"));
+app.listen(8081, () => console.log("Server up and running!!!"));
