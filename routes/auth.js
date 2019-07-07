@@ -2,7 +2,7 @@ const router = require("express").Router();
 const axios = require("axios");
 const dotenv = require("dotenv");
 
-router.get("/products", (req, response) => {
+router.get("/products", async (req, response) => {
 	dotenv.config();
 	try {
 		const instance = axios.create({
@@ -11,12 +11,8 @@ router.get("/products", (req, response) => {
 				password: process.env.WOO_CS
 			}
 		});
-		// const result = await instance.get(`https://react.alphabean.co.nz/wp-json/wc/v2/products/6271/variations`);
-
-		instance.get(`https://react.alphabean.co.nz/wp-json/wc/v2/products/6271/variations`).then(res => {
-			response.send(res.data[0].price);
-		});
-		// response.send(result.data[0].price);
+		const result = await instance.get(`https://react.alphabean.co.nz/wp-json/wc/v2/products/6271/variations`);
+		response.send(result.data);
 	} catch (err) {
 		response.send("Error: " + err);
 	}
