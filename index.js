@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 const dotenv = require("dotenv");
-
+const axios = require("axios");
 //Import middleware
 const authRoute = require("./routes/auth");
 
