@@ -22,11 +22,11 @@ app.get("/api/wc/products", (req, res) => {
 		// const result = await instance.get(`https://react.alphabean.co.nz/wp-json/wc/v2/products/6271/variations`);
 
 		instance.get(`https://react.alphabean.co.nz/wp-json/wc/v2/products/6271/variations`).then(res => {
-			response.send(res.data);
+			res.send(res.data);
 		});
 		// response.send(result.data[0].price);
 	} catch (err) {
-		response.send("Error: " + err);
+		res.send("Error: " + err);
 	}
 });
 
