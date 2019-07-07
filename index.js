@@ -10,7 +10,7 @@ const authRoute = require("./routes/auth");
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
-app.get("/api/wc/products", (req, res) => {
+app.get("/api/wc/products", async (req, res) => {
 	dotenv.config();
 	try {
 		const instance = axios.create({
@@ -19,12 +19,8 @@ app.get("/api/wc/products", (req, res) => {
 				password: process.env.WOO_CS
 			}
 		});
-		// const result = await instance.get(`https://react.alphabean.co.nz/wp-json/wc/v2/products/6271/variations`);
-
-		instance.get(`https://react.alphabean.co.nz/wp-json/wc/v2/products/6271/variations`).then(res => {
-			res.send(res.data);
-		});
-		// response.send(result.data[0].price);
+		const result = await instance.get(`https://react.alphabean.co.nz/wp-json/wc/v2/products/6271/variations`);
+		res.send(result.data);
 	} catch (err) {
 		res.send("Error: " + err);
 	}
