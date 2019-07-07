@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 const authRoute = require("./routes/auth");
 
 //Route middleware
-app.use("/api/wc/", authRoute);
+//app.use("/api/wc/", authRoute);
 
 app.get("/", (req, res) => res.send("Hello World!"));
 
