@@ -4,7 +4,7 @@ const app = express();
 const authRoute = require("./routes/auth");
 
 //Route middleware
-app.use("/api/wc/", authRoute);
+app.use("/api/dinnerin/", authRoute);
 
 app.get("/", (req, res) => res.send("Hello World!!!!"));
 
