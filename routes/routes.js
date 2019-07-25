@@ -32,7 +32,6 @@ router.get("/price", cors(), async (req, response) => {
 		const singleVariations = await instance.get(
 			`https://dinnerin.co.nz/wp-json/wc/v2/products/${singleId}/variations`
 		);
-		response.send("Successful fetch");
 
 		// Find the subscription price of the matching sku
 		const subPrice = subVariations.data.filter(item => {
@@ -43,6 +42,7 @@ router.get("/price", cors(), async (req, response) => {
 		const singlePrice = singleVariations.data.filter(item => {
 			return item.sku === sku + "_SINGLE";
 		})[0].price;
+
 		// Send back the subscription / single price
 		response.send({
 			subscription: {
@@ -56,7 +56,7 @@ router.get("/price", cors(), async (req, response) => {
 		});
 	} catch (err) {
 		// Invalid nights / people values
-		response.status(404).send();
+		response.send(err);
 	}
 
 	// Get the meals and people from the query parameters
