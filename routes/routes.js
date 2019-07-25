@@ -13,7 +13,6 @@ router.get("/price", cors(), async (req, response) => {
 
 	// Extract the nights and people from query
 	const { nights, people } = req.query;
-	response.send("Found the route");
 
 	// The sku to be searched for in the product variations
 	// e.g 3 Meals 6 People would be 3M6P_SINGLE or 3M_6P_SUB
@@ -33,6 +32,7 @@ router.get("/price", cors(), async (req, response) => {
 		const singleVariations = await instance.get(
 			`https://dinnerin.co.nz/wp-json/wc/v2/products/${singleId}/variations`
 		);
+		response.send("Successful fetch");
 
 		// Find the subscription price of the matching sku
 		const subPrice = subVariations.data.filter(item => {
