@@ -42,7 +42,7 @@ router.get("/price", cors(), async (req, response) => {
 		const singlePrice = singleVariations.data.filter(item => {
 			return item.sku === sku + "_SINGLE";
 		})[0].price;
-
+		response.send(subVariations);
 		// Send back the subscription / single price
 		response.send({
 			subscription: {
