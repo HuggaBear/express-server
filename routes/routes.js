@@ -14,6 +14,10 @@ router.get("/price", cors(), async (req, response) => {
 	// Extract the nights and people from query
 	const { nights, people } = req.query;
 
+	if (!nights || people) {
+		response.send("Invalid nights or people value");
+	}
+
 	// The sku to be searched for in the product variations
 	// e.g 3 Meals 6 People would be 3M6P_SINGLE or 3M_6P_SUB
 	const sku = `${nights}M${people}P`;
