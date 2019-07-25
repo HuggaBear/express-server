@@ -22,7 +22,6 @@ router.get("/price", cors(), async (req, response) => {
 	// The sku to be searched for in the product variations
 	// e.g 3 Meals 6 People would be 3M6P_SINGLE or 3M_6P_SUB
 	const sku = `${nights}M${people}P`;
-	console.log(sku);
 
 	try {
 		// Authorise access to WC API
@@ -44,12 +43,10 @@ router.get("/price", cors(), async (req, response) => {
 		const subVariation = subVariations.data.filter(item => {
 			return item.sku === sku + "_SUB";
 		})[0];
-		console.log(subVariation);
 		// Find the single purchase variation
 		const singleVariation = singleVariations.data.filter(item => {
 			return item.sku === sku + "_SINGLE";
 		})[0];
-		console.log(singleVariation);
 
 		if (!subVariation || !singleVariation) {
 			response.send("Invalid nights or people value");
