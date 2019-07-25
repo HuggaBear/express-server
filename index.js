@@ -1,10 +1,10 @@
 const express = require("express");
 const app = express();
 //Import middleware
-const authRoute = require("./routes/routes");
+const routes = require("./routes/routes");
 
 //Route middleware
-app.use("/api/dinnerin/", authRoute);
+app.use("/api/dinnerin/", routes);
 
 app.get("/", (req, res) => res.send("No available route"));
 

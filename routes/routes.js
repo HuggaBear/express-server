@@ -2,7 +2,6 @@ const router = require("express").Router();
 const axios = require("axios");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const WooCommerceAPI = require("woocommerce-api");
 
 // Get the Single Purchase / Subscription price for a given number of nights / people
 router.get("/price", cors(), async (req, response) => {
@@ -16,6 +15,7 @@ router.get("/price", cors(), async (req, response) => {
 	const { nights, people } = req.query;
 
 	// The sku to be searched for in the product variations
+	// e.g 3 Meals 6 People would be 3M6P_SINGLE or 3M_6P_SUB
 	const sku = `${nights}M${people}P`;
 
 	try {
@@ -42,7 +42,8 @@ router.get("/price", cors(), async (req, response) => {
 		const singlePrice = singleVariations.data.filter(item => {
 			return item.sku === sku + "_SINGLE";
 		})[0].price;
-
+		response.send("Found the route");
+		// Send back the subscription / single price
 		response.send({
 			subscription: {
 				perWeek: subPrice,
@@ -54,7 +55,7 @@ router.get("/price", cors(), async (req, response) => {
 			}
 		});
 	} catch (err) {
-		// Cookie could not be found in the database
+		// Invalid nights / people values
 		response.status(404).send();
 	}
 
