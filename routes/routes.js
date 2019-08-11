@@ -72,6 +72,29 @@ router.get("/price", cors(), async (req, response) => {
 	// response.send(result.data);
 });
 
+router.get("/meals", cors(), async (req, response) => {
+	dotenv.config();
+
+	// Extract the cookie value
+	const cookie = req.query.cookieid;
+	try {
+		const instance = axios.create({
+			auth: {
+				username: process.env.WOO_CK,
+				password: process.env.WOO_CS
+			}
+		});
+		// Dump request to get all info about the user
+		const result = await instance.get(
+			`https://dinnerin.alphabean.co.nz/wp-json/dinnerinquasicart/v2/quasicart/dump/notloggedin/${cookie}`
+		);
+		response.send({ meals: result.data.main_meal_selections });
+	} catch (err) {
+		// Cookie could not be found in the database
+		response.status(404).send();
+	}
+});
+
 // Check the database for the cookie value to see if the user has been to the website in the past 28 days.
 // If they have, they will have their previously selected nights and people options stored in the database.
 // We will return their previously selected nights and people.
@@ -87,6 +110,7 @@ router.get("/nightsandpeople", cors(), async (req, response) => {
 				password: process.env.WOO_CS
 			}
 		});
+		// Dump request to get all info about the user
 		const result = await instance.get(
 			`https://dinnerin.alphabean.co.nz/wp-json/dinnerinquasicart/v2/quasicart/dump/notloggedin/${cookie}`
 		);
@@ -97,6 +121,27 @@ router.get("/nightsandpeople", cors(), async (req, response) => {
 	}
 });
 
+// router.post("/nightsandpeople", cors(), async (req, response) => {
+// 	dotenv.config();
+
+// 	// Extract the cookie value
+// 	const cookie = req.query.cookieid;
+// 	try {
+// 		const instance = axios.create({
+// 			auth: {
+// 				username: process.env.WOO_CK,
+// 				password: process.env.WOO_CS
+// 			}
+// 		});
+// 		const result = await instance.get(
+// 			`https://dinnerin.alphabean.co.nz/wp-json/dinnerinquasicart/v2/quasicart/dump/notloggedin/${cookie}`
+// 		);
+// 		response.send({ nights: result.data.num_nights, people: result.data.num_people });
+// 	} catch (err) {
+// 		// Cookie could not be found in the database
+// 		response.status(404).send();
+// 	}
+// });
 //router.post('/login')
 
 module.exports = router;
