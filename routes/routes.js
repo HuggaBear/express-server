@@ -84,13 +84,18 @@ router.get("/meals", cors(), async (req, response) => {
 				password: process.env.WOO_CS
 			}
 		});
+
 		// Dump request to get all info about the user
 		const result = await instance.get(
 			`https://dinnerin.alphabean.co.nz/wp-json/dinnerinquasicart/v2/quasicart/dump/notloggedin/${cookie}`
 		);
-		response.send({ meals: result.data.main_meal_selections });
+		// Send the main_meal_selections in a nice array format
+		const mealsArray = Object.keys(result.data.main_meal_selections).map(
+			key => result.data.main_meal_selections[key]
+		);
+		response.send({ meals: mealsArray });
 	} catch (err) {
-		// Cookie could not be found in the database
+		// Unable to reach server
 		response.status(404).send();
 	}
 });
