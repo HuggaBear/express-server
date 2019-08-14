@@ -2,12 +2,12 @@ const router = require("express").Router();
 const axios = require("axios");
 const dotenv = require("dotenv");
 const cors = require("cors");
-
+const DESSERTS_CATEGORY_ID = 99;
+const BASE_URL = "https://dinnerin.alphabean.co.nz";
+const SINGLE_ID = 10403; // ID of single purchase DINNERin product on https://dinnerin.co.nz/
+const SUB_ID = 10402; // ID of subscription DINNERin product on https://dinnerin.co.nz/
 // Get the Single Purchase / Subscription price for a given number of nights / people
 router.get("/price", cors(), async (req, response) => {
-	const singleId = 10403; // ID of single purchase DINNERin product on https://dinnerin.co.nz/
-	const subId = 10402; // ID of subscription DINNERin product on https://dinnerin.co.nz/
-
 	// Configure the environment variables
 	dotenv.config();
 
@@ -34,10 +34,10 @@ router.get("/price", cors(), async (req, response) => {
 
 		// Get all the subscription and single purchase product variations
 		const subVariations = await instance.get(
-			`https://dinnerin.co.nz/wp-json/wc/v2/products/${subId}/variations?per_page=100`
+			`https://dinnerin.co.nz/wp-json/wc/v2/products/${SUB_ID}/variations?per_page=100`
 		);
 		const singleVariations = await instance.get(
-			`https://dinnerin.co.nz/wp-json/wc/v2/products/${singleId}/variations?per_page=100`
+			`https://dinnerin.co.nz/wp-json/wc/v2/products/${SINGLE_ID}/variations?per_page=100`
 		);
 		// Find the subscription variation
 		const subVariation = subVariations.data.filter(item => {
@@ -87,7 +87,7 @@ router.get("/meals", cors(), async (req, response) => {
 
 		// Dump request to get all info about the user
 		const result = await instance.get(
-			`https://dinnerin.alphabean.co.nz/wp-json/dinnerinquasicart/v2/quasicart/dump/notloggedin/${cookie}`
+			`${BASE_URL}/wp-json/dinnerinquasicart/v2/quasicart/dump/notloggedin/${cookie}`
 		);
 		// Send the main_meal_selections in a nice array format
 		const mealsArray = Object.keys(result.data.main_meal_selections).map(
@@ -95,6 +95,30 @@ router.get("/meals", cors(), async (req, response) => {
 		);
 		response.send({ meals: mealsArray });
 	} catch (err) {
+		// Unable to reach server
+		response.status(404).send();
+	}
+});
+
+// Send all the available desserts on the DINNERin website
+router.get("/desserts", cors(), async (req, response) => {
+	dotenv.config();
+	console.log("desserts hit");
+
+	try {
+		const instance = axios.create({
+			auth: {
+				username: process.env.WOO_CK_TEST,
+				password: process.env.WOO_CS_TEST
+			}
+		});
+
+		const result = await instance.get(`${BASE_URL}/wp-json/wc/v2/products?category=${DESSERTS_CATEGORY_ID}`);
+		console.log(result.data);
+
+		response.send(result.data);
+	} catch (err) {
+		console.log(err.message);
 		// Unable to reach server
 		response.status(404).send();
 	}
@@ -117,7 +141,7 @@ router.get("/nightsandpeople", cors(), async (req, response) => {
 		});
 		// Dump request to get all info about the user
 		const result = await instance.get(
-			`https://dinnerin.alphabean.co.nz/wp-json/dinnerinquasicart/v2/quasicart/dump/notloggedin/${cookie}`
+			`${BASE_URL}/wp-json/dinnerinquasicart/v2/quasicart/dump/notloggedin/${cookie}`
 		);
 		response.send({ nights: result.data.num_nights, people: result.data.num_people });
 	} catch (err) {
@@ -125,28 +149,5 @@ router.get("/nightsandpeople", cors(), async (req, response) => {
 		response.status(404).send();
 	}
 });
-
-// router.post("/nightsandpeople", cors(), async (req, response) => {
-// 	dotenv.config();
-
-// 	// Extract the cookie value
-// 	const cookie = req.query.cookieid;
-// 	try {
-// 		const instance = axios.create({
-// 			auth: {
-// 				username: process.env.WOO_CK,
-// 				password: process.env.WOO_CS
-// 			}
-// 		});
-// 		const result = await instance.get(
-// 			`https://dinnerin.alphabean.co.nz/wp-json/dinnerinquasicart/v2/quasicart/dump/notloggedin/${cookie}`
-// 		);
-// 		response.send({ nights: result.data.num_nights, people: result.data.num_people });
-// 	} catch (err) {
-// 		// Cookie could not be found in the database
-// 		response.status(404).send();
-// 	}
-// });
-//router.post('/login')
 
 module.exports = router;
