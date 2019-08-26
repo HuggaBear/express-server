@@ -3,7 +3,7 @@ const axios = require("axios");
 const dotenv = require("dotenv");
 const cors = require("cors");
 const DESSERTS_CATEGORY_ID = 99;
-const BASE_URL = "https://dinnerin.alphabean.co.nz";
+const BASE_URL = "https://dinnerin.alphabean.co.nz"; // Change this to https://dinnerin.co.nz/ for prod
 const SINGLE_ID = 10403; // ID of single purchase DINNERin product on https://dinnerin.co.nz/
 const SUB_ID = 10402; // ID of subscription DINNERin product on https://dinnerin.co.nz/
 // Get the Single Purchase / Subscription price for a given number of nights / people
