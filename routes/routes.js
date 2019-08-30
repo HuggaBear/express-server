@@ -20,7 +20,7 @@ router.get("/price", cors(), async (req, response) => {
 		response.send("No people value given");
 	}
 	// The sku to be searched for in the product variations
-	// e.g 3 Meals 6 People would be 3M6P_SINGLE or 3M_6P_SUB
+	// e.g 3 Meals 6 People would be 3M6P_SINGLE or 3M6P_SUB
 	const sku = `${nights}M${people}P`;
 
 	try {
@@ -47,7 +47,8 @@ router.get("/price", cors(), async (req, response) => {
 		const singleVariation = singleVariations.data.filter(item => {
 			return item.sku === sku + "_SINGLE";
 		})[0];
-
+		console.log(subVariation);
+		console.log(singleVariation);
 		if (!subVariation || !singleVariation) {
 			response.send("Invalid nights or people value");
 		} else {
@@ -103,13 +104,11 @@ router.get("/meals", cors(), async (req, response) => {
 // Send all the available desserts on the DINNERin website
 router.get("/desserts", cors(), async (req, response) => {
 	dotenv.config();
-	console.log("desserts hit");
-
 	try {
 		const instance = axios.create({
 			auth: {
-				username: process.env.WOO_CK_TEST,
-				password: process.env.WOO_CS_TEST
+				username: process.env.WOO_CK,
+				password: process.env.WOO_CS
 			}
 		});
 
