@@ -104,6 +104,8 @@ router.get("/meals", cors(), async (req, response) => {
 // Send all the available desserts on the DINNERin website
 router.get("/desserts", cors(), async (req, response) => {
 	dotenv.config();
+	console.log("desserts hit");
+
 	try {
 		const instance = axios.create({
 			auth: {
