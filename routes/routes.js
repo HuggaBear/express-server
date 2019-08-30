@@ -4,7 +4,7 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const DESSERTS_CATEGORY_ID = 99;
 const BASE_URL = "https://dinnerin.co.nz"; // Change this to https://dinnerin.co.nz/ for prod
-const SINGLE_ID = 10403; // ID of single purchase DINNERin product on https://dinnerin.co.nz/
+const SINGLE_ID = 8671; // ID of single purchase DINNERin product on https://dinnerin.co.nz/
 const SUB_ID = 10402; // ID of subscription DINNERin product on https://dinnerin.co.nz/
 // Get the Single Purchase / Subscription price for a given number of nights / people
 router.get("/price", cors(), async (req, response) => {
@@ -49,13 +49,13 @@ router.get("/price", cors(), async (req, response) => {
 		})[0];
 		console.log(subVariation);
 		console.log(singleVariation);
-		if (!subVariation || !singleVariation) {
+		if (/* !subVariation */!singleVariation) {
 			response.send("Invalid nights or people value");
 		} else {
 			response.send({
 				subscription: {
-					perWeek: parseFloat(subVariation.price).toFixed(2),
-					perMeal: (subVariation.price / (nights * people)).toFixed(2)
+					perWeek: subVariation ? parseFloat(subVariation.price).toFixed(2) : 0,
+					perMeal: subVariation ? (subVariation.price / (nights * people)).toFixed(2) : 0
 				},
 				singlePurchase: {
 					perWeek: parseFloat(singleVariation.price).toFixed(2),
